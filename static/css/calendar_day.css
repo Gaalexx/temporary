@@ -1,0 +1,93 @@
+.calendar-header {
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 0;
+  display: flex;
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+  min-width: 400px;
+  border-left: #DADCE0 1px solid;
+}
+
+.day-header {
+  background-color: #F6F6F6;
+  color: #666;
+  padding: 3px;
+  margin: 0;
+  list-style:none;
+  flex-grow: 1;
+  flex-basis: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 12px;
+  border-top: #DADCE0 1px solid;
+  border-right: #DADCE0 1px solid;
+  border-bottom: 0px;
+}
+
+
+.day-div {
+  margin: 9px;
+}
+
+.day-div span {
+  font-size: 20px;
+}
+
+.day-div .day-curent {
+  font-weight: 700;
+  color: #FFF;
+  background-color: rgb(26,115,232);
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.weekday-curent {
+  color: rgb(26,115,232);
+}
+
+
+
+.calendar {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+  min-width: 400px;
+  border-bottom: #DADCE0 1px solid;
+  border-left: #DADCE0 1px solid;
+}
+
+.day {
+  text-align: center;
+  background-color: #FFF;
+  padding: 3px;
+  margin: 0;
+  min-height: 50px;
+  list-style:none;
+  flex-grow: 1;
+  flex-basis: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-top: #DADCE0 1px solid;
+  border-right: #DADCE0 1px solid;
+  border-bottom: 0px;
+}
+
+
+.add-button {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: #444;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}

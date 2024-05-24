@@ -1,0 +1,12 @@
+.header {
+    display: inline;
+}
+
+.header .current-date {
+    display: inline;
+}
+
+.header .select_calendar {
+    display: inline;
+    float: right;
+}

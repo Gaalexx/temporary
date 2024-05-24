@@ -1,0 +1,86 @@
+
+.calendar-header {
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 0;
+  display: flex;
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+  min-width: 400px;
+  border-left: #DADCE0 1px solid;
+}
+
+.weekday-header {
+  background-color: #F6F6F6;
+  color: #666;
+  padding: 3px;
+  margin: 0;
+  list-style:none;
+  flex-grow: 1;
+  flex-basis: 12%;
+  overflow: auto;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 12px;
+  border-top: #DADCE0 1px solid;
+  border-right: #DADCE0 1px solid;
+  border-bottom: 0px;
+}
+
+.weekday-curent {
+  color: rgb(26,115,232);
+}
+
+.day-header {
+  margin: 9px;
+}
+
+.day-header span {
+  font-size: 20px;
+}
+
+.day-header .day-curent {
+  font-weight: 700;
+  color: #FFF;
+  background-color: rgb(26,115,232);
+  padding: 8px;
+  border-radius: 50%;
+}
+
+
+.calendar {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+  min-width: 400px;
+  border-bottom: #DADCE0 1px solid;
+  border-left: #DADCE0 1px solid;
+}
+
+.day {
+  text-align: center;
+  background-color: #FFF;
+  padding: 3px;
+  margin: 0;
+  min-height: 50px;
+  list-style:none;
+  flex-grow: 1;
+  flex-basis: 13.5%;
+  overflow: auto;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-top: #DADCE0 1px solid;
+  border-right: #DADCE0 1px solid;
+  border-bottom: 0px;
+}
+
+span.daynum {
+    font-size: 12px;
+    font-weight: 400;
+    color: #666;
+    padding: 3px;
+}
