@@ -105,12 +105,12 @@ class EventsDataBase():
         except:
            return False
     
-    def deleteEvent(self, userId, date):
+    def deleteEvent(self, userId, date, id):
         try:
             #self._connection = sqlite3.connect("instance/userInfo.db")
             self._cursor.execute(
-                            "DELETE FROM eventsInfo WHERE userId = ? AND year = ? AND month = ? AND day = ? AND time = ?",
-                            (f"{userId[0]}", f"{date[0]}", f"{date[1]}", f"{date[2]}", f"{date[3]}"),
+                            "DELETE FROM eventsInfo WHERE userId = ? AND year = ? AND month = ? AND day = ? AND time = ? AND Id = ?",
+                            (f"{userId[0]}", f"{date[0]}", f"{date[1]}", f"{date[2]}", f"{date[3]}", f"{id}"),
                         )
             self._connection.commit()
             self._connection.close()
@@ -148,11 +148,11 @@ class EventsDataBase():
         except:
             return SearchExeption
     
-    def getEvent(self, userId, date):
+    def getEvent(self, userId, date, id):
         try:
             self._cursor.execute(
-                "SELECT name, description FROM eventsInfo WHERE (userId = ? AND year = ? AND month = ? and day = ? and time = ?)",
-                (f"{userId}", f"{date[0]}", f"{date[1]}", f"{date[2]}", f"{date[3]}"),
+                "SELECT name, description FROM eventsInfo WHERE (userId = ? AND year = ? AND month = ? and day = ? and time = ? and Id = ?)",
+                (f"{userId}", f"{date[0]}", f"{date[1]}", f"{date[2]}", f"{date[3]}", f"{id}"),
             )
             results = self._cursor.fetchall()
             if len(results) != 0:
@@ -165,7 +165,7 @@ class EventsDataBase():
     def getDayEvents(self, userId, date):
         try:
             self._cursor.execute(
-                "SELECT name, description, time FROM eventsInfo WHERE (userId = ? AND year = ? AND month = ? and day = ?)",
+                "SELECT name, description, time, id FROM eventsInfo WHERE (userId = ? AND year = ? AND month = ? and day = ?)",
                 (f"{userId}", f"{date[0]}", f"{date[1]}", f"{date[2]}"),
             )
             results = self._cursor.fetchall()

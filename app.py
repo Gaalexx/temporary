@@ -29,7 +29,7 @@ def create_app(config_overrides: Optional[Dict] = None) -> Flask:
     app.add_url_rule("/change_password", "ch_p", change_password, methods=["GET", "POST"])
     app.add_url_rule("/check_for_change", "ch_check", check_for_change, methods=["GET", "POST"])
     app.add_url_rule("/change", "change", change, methods=["GET", "POST"])
-    app.add_url_rule('/calendar/event/<year>/<month>/<day>/<time>', "view", viewNote, methods=["GET", "POST"])
+    app.add_url_rule('/calendar/event/<year>/<month>/<day>/<time>/<id>', "view", viewNote, methods=["GET", "POST"])
     
     return app
 
@@ -40,3 +40,4 @@ if __name__ == "__main__":
     app.run(debug=app.config["DEBUG"],
             host=app.config["HOST_IP"],
             port=app.config["PORT"])
+    
