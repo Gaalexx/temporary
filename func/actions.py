@@ -93,9 +93,8 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
     else:
         uId = request.cookies.get("is_logined")
         events = edb.getAllEventsWeek(uId, month)
-    week_events = [[dt.date(events[x][0], events[x][1], events[x][2]), events[x][3], events[x][4], events[x][0], events[x][1], events[x][2], events[x][3]] for x in range(len(events))]
+    week_events = [[dt.date(events[x][0], events[x][1], events[x][2]), events[x][3], events[x][4], events[x][0], events[x][1], events[x][2], events[x][3], events[x][-1]] for x in range(len(events))]
     print(week_events)
-    print(dt.date(2024, 5, 26))
     return make_response(render_template(
         "calendar_week.html",
         month_name=month_name,
@@ -146,7 +145,7 @@ def calendar_day_page(year=None, month=None, day=None) -> make_response:
     else:
         uId = request.cookies.get("is_logined")
         events = edb.getDayEvents(uId, date)
-    events = [[events[x][0], events[x][1], int(events[x][2])] for x in range(len(events))]
+    events = [[events[x][0], events[x][1], int(events[x][2]), events[x][3]] for x in range(len(events))]
     print(events)
     return make_response(render_template(
             "calendar_day.html",
@@ -273,6 +272,12 @@ def settings():
                 return res
             else:
                 return "You aren't logined."
+        elif request.form['submit'] == 'change_p':
+            if request.cookies.get('is_logined'):
+                res = make_response(redirect('/change_password'))
+                return res
+            else:
+                return "You aren't logined."
     else:
         return render_template("settings.html")
 
@@ -301,7 +306,11 @@ def get_Info(day=None, month=None, year=None, num_hour=None):
             task_name = request.form['name']
             task_description = request.form['description']
             event = (task_name, task_description)
-            freequency = request.form["frequency"]
+            freequency = ''
+            try:
+                freequency = request.form["frequency"]
+            except:
+                pass
             d_num = request.form["daynumber"]
 
 
@@ -385,7 +394,7 @@ def change():
                 return "Произошла ошибка, попробуйте еще раз"
     return render_template("change.html")
 
-def viewNote(year=None, month=None, day=None, time=None):
+def viewNote(year=None, month=None, day=None, time=None, id=None):
     from DataBase_class import EventsDataBase
     db = EventsDataBase()
     date = [year, month, day, time]
@@ -395,7 +404,7 @@ def viewNote(year=None, month=None, day=None, time=None):
             return "Вы не вошли в аккаунт"
         else:
             uId = request.cookies.get("is_logined")
-            res = db.getEvent(uId, date)
+            res = db.getEvent(uId, date, id)
         if int(day) < 10:
             day = "0" + str(day)
         if int(month) < 10:
@@ -433,5 +442,5 @@ def viewNote(year=None, month=None, day=None, time=None):
                 return "Вы не вошли в аккаунт"
             else:
                 uId = request.cookies.get("is_logined")
-                db.deleteEvent(uId, date)
+                db.deleteEvent(uId, date, id)
             return make_response(redirect("/calendar"))
