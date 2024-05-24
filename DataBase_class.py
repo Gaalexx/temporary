@@ -136,11 +136,11 @@ class EventsDataBase():
     def getAllEventsWeek(self, userId, month):
         try:
             self._cursor.execute(
-                "SELECT description, name, year, month, day, time FROM eventsInfo WHERE (userId = ? AND month = ?)",
+                "SELECT description, name, year, month, day, time, id FROM eventsInfo WHERE (userId = ? AND month = ?)",
                 (f"{userId}", f"{month}"),
             )
             results = self._cursor.fetchall()
-            res = [[int(results[x][-4]), int(results[x][-3]), int(results[x][-2]), int(results[x][-1]), str(results[x][1])] for x in range(len(results))]
+            res = [[int(results[x][-5]), int(results[x][-4]), int(results[x][-3]), int(results[x][-2]), str(results[x][1]), results[x][-1]] for x in range(len(results))]
             if len(res) != 0:
                 return res
             else:
