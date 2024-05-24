@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Событие</title>
+</head>
+<body>
+  <h1>Событие</h1>
+  <form method="post">
+    <label for="title">Заголовок:</label><br>
+    <input type="text" id="title" name="title" value={{event[0]}}><br>
+    <label for="description">Описание:</label><br>
+    <textarea id="description" name="description" rows="4" cols="50">{{event[1]}}</textarea><br><br>
+    <label for="date">Дата:</label><br>
+    <input type="date" name="calendar" value="{{year}}-{{month}}-{{day}}"><br>
+    <label for="time">Время:</label><br>
+    <input type="time" id="appt" name="appt" min="00:00" max="24:00" value="{{ time }}:00"/>
+    <small>Минуты не учитываются</small><br>
+    <button type="submit" name="submit" value="save">Сохранить</button>
+  </form>
+  <br>
+  <form method="post">
+    <button type="submit" name="submit" value="delete">Удалить событие</button>
+  </form>
+</body>
+</html>

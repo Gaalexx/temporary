@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление события</title>
+</head>
+<body>
+    <h1>Добавить событие</h1>
+
+    <form action="/calendar/day/{{ day }}/{{ month }}/{{ year }}/{{ num_hour }}/add" method="post">
+        <label for="name">Название:</label>
+        <input type="text" name="name" id="name">
+        <br>
+        <label for="description">Описание:</label>
+        <textarea name="description" id="description" rows="4" cols="50"></textarea>
+        <br>
+        <button href="/calendar/day/{{ day }}/{{ month }}/{{ year }}/{{ num_hour }}/add" type="submit" name="submit" value="AI">AI</button>
+        <button href="/calendar/day/{{ day }}/{{ month }}/{{ year }}/{{ num_hour }}/add" type="submit" name="submit" value="Подтвердить">Подтвердить</button>
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление события</title>
+</head>
+<body>
+    <h1>Добавить событие</h1>
+
+    <form action="/calendar/day/{{ day }}/{{ month }}/{{ year }}/{{ num_hour }}/add" method="post">
+        <label for="name">Название:</label>
+        <input type="text" name="name" id="name">
+        <br>
+        <label for="description">Описание:</label>
+        <textarea name="description" id="description" rows="4" cols="50"></textarea>
+        <br>
+        <label>Периодичность</label>
+        <br>
+        <input type="radio" id="everyday" name="frequency" value="everyday">
+        <label for="everyday">Каждый день</label>
+        <input type="radio" id="everyweek" name="frequency" value="everyweek">
+        <label for="everyweek">Каждую неделю</label>
+        <input type="radio" id="everyyear" name="frequency" value="everyyear">
+        <label for="everyyear">Каждый месяц</label>
+        <br>
+        <label for="daynumber">Количество повторов:</label>
+        <input type="number" id="daynumber" name="daynumber" min="1" max="31">
+        <br>
+        <button type="submit" name="submit" value="AI">AI</button>
+        <button type="submit" name="submit" value="Подтвердить">Подтвердить</button>
+    </form>
+</body>
+</html>

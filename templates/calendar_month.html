@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/calendar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/calendar_month.css') }}" />
+</head>
+<body>
+    <h1>Календарь на месяц</h1>
+
+    <div class="header">
+
+        <button title="Предыдущий месяц" onclick="window.location='/calendar/month{{ previous_month_link }}'" >&lt;</button>
+        <button title="Следующий месяц" onclick="window.location='/calendar/month{{ next_month_link }}'" >&gt;</button>
+
+        <div class="current-date">
+            {{ month_name }} {{ year }}
+        </div>
+
+
+
+        {% if month != current_month or year != current_year %}
+            <button title="{{ current_day }} {{ current_month_name }} {{ current_year }} " onclick="window.location='/calendar/month/'">Сегодня</button>
+        {% endif %}
+
+        <div class="select_calendar">
+            <select name="select_calendar" id="select_calendar">
+              <option value="day">День</option>
+              <option value="week">Неделя</option>
+              <option value="month" selected>Месяц</option>
+            </select>
+        </div>
+
+    </div>
+
+    <ul class="calendar-header">
+        {% for weekday_header in weekdays_headers %}
+            <li class="weekday-header">{{ weekday_header }}</li>
+        {% endfor %}
+    </ul>
+
+    <ul class="calendar" id="calendar">
+        {% for day in month_days %}
+            <li
+                
+                {% if day.month != month %}
+                    class="day other_month"
+                {% else %}
+                    class="day"
+                {% endif %}
+                data-year="{{ day.year }}" data-month="{{ day.month }}" data-day="{{ day.day }}">
+                {% if days_of_events %}
+                    {% for event in days_of_events if event == day.day%}
+                        <button type="submit" name="year" value="{{ day.year }}" name="month" value="{{ day.month }}" name="day" value="{{ day.day }}" onclick="window.location='/calendar/day/{{day.year}}/{{day.month}}/{{day.day}}'" style="width: 110px; height: 110px;">
+                            {%if day.day == current_day and day.month == current_month and day.year == current_year%}
+                                <span class="daynum-current">
+                            {%elif event == day.day and month == day.month%}
+                                <span class="daynum-event">
+                            {%else%}
+                                <span class="daynum">
+                            {%endif%}
+                            {{ day.day }}</span>
+                        </button>
+                    {%else%}
+                        <button type="submit" name="year" value="{{ day.year }}" name="month" value="{{ day.month }}" name="day" value="{{ day.day }}" onclick="window.location='/calendar/day/{{day.year}}/{{day.month}}/{{day.day}}'" style="width: 110px; height: 110px;">
+                            {% if day.day == current_day and day.month == current_month and day.year == current_year %}
+                                <span class="daynum-current">
+                            {% else %}
+                                <span class="daynum">
+                            {% endif %}
+                            {{ day.day }}</span>
+                        </button>
+                    {% endfor %}
+                {%else%}
+                    <button type="submit" name="year" value="{{ day.year }}" name="month" value="{{ day.month }}" name="day" value="{{ day.day }}" onclick="window.location='/calendar/day/{{day.year}}/{{day.month}}/{{day.day}}'" style="width: 110px; height: 110px;">
+                        {% if day.day == current_day and day.month == current_month and day.year == current_year %}
+                            <span class="daynum-current">
+                        {% else %}
+                            <span class="daynum">
+                        {% endif %}
+                        {{ day.day }}</span>
+                    </button>
+                {% endif %}
+
+            </li>
+        {% endfor %}
+    </ul>
+    
+
+
+</body>
+</html>
+
+<script src="{{ url_for('static', filename='js/select_calendar.js') }}"></script>
+
+ 
