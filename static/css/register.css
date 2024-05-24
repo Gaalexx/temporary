@@ -1,0 +1,43 @@
+/* main.css */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Отключение прокрутки страницы */
+}
+
+body {
+    background-color: #f8f9fa; /* Светло-серый фон страницы */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    height: 100%; /* Занимает всю высоту видимой области */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    border-radius: 10px; /* Округленные углы карточки */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для карточки */
+}
+
+h3.card-title {
+    color: #343a40; /* Темный цвет заголовка */
+    margin-bottom: 20px; /* Дополнительный отступ снизу */
+}
+
+.form-control {
+    border-radius: 5px; /* Округленные углы полей ввода */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Основной цвет кнопки */
+    border: none; /* Удаление границы кнопки */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Цвет кнопки при наведении */
+}
