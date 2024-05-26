@@ -113,9 +113,54 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
     )
     )
 
+def update_task_day_action(year=None, month=None, day=None, id=None) -> make_response:
+    print("update_task_day_action")
 
 def calendar_day_page(year=None, month=None, day=None) -> make_response:
+    print("calendar_day_page")
+
     from DataBase_class import EventsDataBase
+
+    if request.method == "PUT":
+        print("calendar_day_page PUT")
+
+        body = request.data.decode("utf-8")
+        idd, newHour, oldHour = body.split("|")
+        print("calendar_day_page newHour: %s, oldHour: %s" % (newHour, oldHour))
+
+        db = EventsDataBase()
+        date = [year, month, day, oldHour]
+        n_date = [year, month, day, newHour]
+
+        """
+        viewNote POST date: ['2024', '5', '23', '0']
+        viewNote POST n_date: [2024, 5, 23, 0]
+        """
+
+        print("calendar_day_page date: %s" % date)
+        print("calendar_day_page n_date: %s" % n_date)
+
+        print(body)
+
+        #db.updateEvent(85, n_date, ["name", "description"], date)
+
+        if not request.cookies.get("is_logined"):
+            return "Вы не вошли в аккаунт"
+        else:
+            uId = request.cookies.get("is_logined")
+            print(f"calendar_day_page uId: {uId}  date: {date}  id: {idd}")
+
+            #calendar_day_page uId: 2  date: ['2024', '5', '29', '0']  id: 151
+
+            res = db.getEvent(uId, date, idd)
+            print("calendar_day_page res: %s" % res)
+            if len(res) != 0:
+                print("calendar_day_page res: %s" % res)
+                #print("calendar_day_page res: %s" % res[0])
+
+                db.updateEvent(uId, n_date, [res[0], res[1]], date)
+
+
 
     GregorianCalendar.setfirstweekday(current_app.config["FIRST_DAY_WEEK"])
 
@@ -142,8 +187,9 @@ def calendar_day_page(year=None, month=None, day=None) -> make_response:
     else:
         uId = request.cookies.get("is_logined")
         events = edb.getDayEvents(uId, date)
+        print("events: %s" % events)
     events = [[events[x][0], events[x][1], int(events[x][2]), events[x][3]] for x in range(len(events))]
-    print(events)
+    #print(events)
     return make_response(render_template(
         "calendar_day.html",
         day=day,
@@ -322,12 +368,6 @@ def get_Info(day=None, month=None, year=None, num_hour=None):
                     uId = request.cookies.get('is_logined')
                 for x in n_dates:
                     edb.addEvent(uId, event, x)
-            else:
-                if not request.cookies.get('is_logined'):
-                    return "You aren't logined."
-                else:
-                    uId = request.cookies.get('is_logined')
-                    edb.addEvent(uId, event, (year, month, day, num_hour))
             # получаем id
             date1 = [year, month, day]
             edb1 = EventsDataBase()
@@ -448,6 +488,9 @@ def viewNote(year=None, month=None, day=None, time=None, id=None):
             return "Вы не вошли в аккаунт"
         else:
             uId = request.cookies.get("is_logined")
+
+            print(f"calendar_day_page uId: {uId}  date: {date}  id: {id}")
+
             res = db.getEvent(uId, date, id)
         if int(day) < 10:
             day = "0" + str(day)
@@ -475,10 +518,17 @@ def viewNote(year=None, month=None, day=None, time=None, id=None):
             n_date = list(map(int, n_date.split('-')))
             n_date.append(time[0])
 
+            print("viewNote POST")
+
+
+            print("viewNote POST date: %s" % date)
+            print("viewNote POST n_date: %s" % n_date)
+
             if not request.cookies.get("is_logined"):
                 return "Вы не вошли в аккаунт"
             else:
                 uId = request.cookies.get("is_logined")
+                print("viewNote POST uId: %s" % uId)
                 db.updateEvent(uId, n_date, [name, description], date)
             return redirect("/calendar")
         elif request.form["submit"] == "delete":
