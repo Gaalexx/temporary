@@ -2,7 +2,6 @@ from flask import Flask
 from typing import Dict, Optional
 from func.actions import *#index_page, calendar_page, calendar_month_page, calendar_week_page, calendar_day_page, home, 
 
-
 def create_app(config_overrides: Optional[Dict] = None) -> Flask:
     app = Flask(__name__)
 
@@ -40,4 +39,5 @@ if __name__ == "__main__":
     app.run(debug=app.config["DEBUG"],
             host=app.config["HOST_IP"],
             port=app.config["PORT"])
+    
     
