@@ -21,7 +21,7 @@ class Mail:
         msg["Subject"] = Header(header_text, "utf-8")
         msg["From"] = login
         msg["To"] = self.user_mail
-
+        # тута
         s = smtplib.SMTP("smtp.yandex.ru", 587, timeout=10)
         is_sent = True
         try:

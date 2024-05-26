@@ -15,10 +15,9 @@ def reminder():
         users = db.getAllUsers()
         print(data, users)
         for x in data:
-            if cur_date[-1] == x[-1] + 1:
-                ml.send_email_to(x[1], f"The event {x[0]} will begin soon!", users[x[2]])
+            if int(cur_date[-1]) == int(x[-1]) - 1: #+1
+                ml.send_email_to(x[1], f"The event {x[0]} will begin in one hour!", users[x[2]])
                 
-    # Запланировать выполнение функции sendReminder каждые 60 минут с начала часа
     schedule.every().hour.at(":00").do(sendReminder)
 
     while True:
