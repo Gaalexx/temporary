@@ -322,6 +322,12 @@ def get_Info(day=None, month=None, year=None, num_hour=None):
                     uId = request.cookies.get('is_logined')
                 for x in n_dates:
                     edb.addEvent(uId, event, x)
+            else:
+                if not request.cookies.get('is_logined'):
+                    return "You aren't logined."
+                else:
+                    uId = request.cookies.get('is_logined')
+                    edb.addEvent(uId, event, (year, month, day, num_hour))
             # получаем id
             date1 = [year, month, day]
             edb1 = EventsDataBase()
