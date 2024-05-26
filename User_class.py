@@ -19,7 +19,7 @@ class User:
         mail_sender = Mail(self)
         code = randint(1000, 9999)
         flag = mail_sender.send_email(
-            f"Hi!\nYour code is {code}", "Your code."
+            f"Hi, {self.name}!\nYour code is {code}", "Your code."
         )
         if flag:
             return code  # письмо отправилось - возвращаем код, иначе -1, что значит, что что-то не так

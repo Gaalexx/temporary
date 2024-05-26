@@ -34,6 +34,26 @@ class DataBase:
         res = self._checkForLog(user)
         print(res)
         return res[0]
+    
+    def getAllUsers(self):
+        try:
+            self._connection = sqlite3.connect("instance/userInfo.db")
+            self._cursor.execute(
+                "SELECT id, mail FROM userInfo",
+            )
+            results = self._cursor.fetchall()
+
+
+            users = dict()
+            for _ in results:
+                users[_[0]] = _[1]
+
+            if len(results) != 0:
+                return users
+            else:
+                return []
+        except:
+            return SearchExeption
 
     def _checkForDif(self, user: User):
         try:
@@ -157,6 +177,20 @@ class EventsDataBase():
             results = self._cursor.fetchall()
             if len(results) != 0:
                 return list(results[0])
+            else:
+                return []
+        except:
+            return SearchExeption #изменить ошибку
+    
+    def getAllEventsDayOfAll(self, date):
+        try:
+            self._cursor.execute(
+                "SELECT name, description, userId, time FROM eventsInfo WHERE (year = ? AND month = ? and day = ?)",
+                (f"{int(date[0])}", f"{int(date[1])}", f"{int(date[2])}"),
+            )
+            results = self._cursor.fetchall()
+            if len(results) != 0:
+                return results
             else:
                 return []
         except:
