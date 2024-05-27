@@ -109,7 +109,7 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
         weekdays_headers=current_app.config["WEEK_DAYS"],
         week_days=week_days,
         previous_week_link=previous_week_link(year, month, week),
-        next_month_link=next_week_link(year, month, week)
+        next_week_link=next_week_link(year, month, week)
     )
     )
 

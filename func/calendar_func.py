@@ -15,16 +15,24 @@ def next_month_link(year: int, month: int) -> str:
 def previous_week_link(year: int, month: int, week: int) -> str:
     week = week - 1
     if week < 0:
-        week = 4
         month, year = GregorianCalendar.prev_month_and_year(year=year, month=month)
+        week = GregorianCalendar.count_weeks(year, month) - 1
+    elif week == 0 and GregorianCalendar.count_weeks(year, month) == 5:
+        month, year = GregorianCalendar.prev_month_and_year(year=year, month=month)
+        week = GregorianCalendar.count_weeks(year, month) - 1
+
     return f"/{year}/{month}/{week}"
 
 
 def next_week_link(year: int, month: int, week: int) -> str:
     week = week + 1
-    if week > 4:
-        week = 0
+    if week > GregorianCalendar.count_weeks(year, month) - 1:
         month, year = GregorianCalendar.next_month_and_year(year=year, month=month)
+        if GregorianCalendar.monthrange(year, month)[0] == 0:
+            week = 0
+        else:
+            week = 1
+
     return f"/{year}/{month}/{week}"
 
 
