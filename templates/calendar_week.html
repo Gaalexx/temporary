@@ -91,8 +91,10 @@
                                 <span class="daynum"> {{ week_days[num_day] }} {{ num_hour }}:00 </span>
                                 <br>
                                 {% if not added %}
-                                    {% if month != 1 and week_days_num[num_day] < week_days_num[0] %}
+                                    {% if month != 12 and week_days_num[num_day] < week_days_num[0] %}
                                         <button class="fw-light col-12 border border-light bg-light text-start" type="submit" name="smit" onclick="window.location='/calendar/day/{{ week_days_num[num_day] }}/{{month + 1}}/{{ year }}/{{ num_hour }}/add'">Добавить</button>
+                                    {% elif month == 12 and week_days_num[num_day] < week_days_num[0] %}
+                                        <button class="fw-light col-12 border border-light bg-light text-start" type="submit" name="smit" onclick="window.location='/calendar/day/{{ week_days_num[num_day] }}/{{1}}/{{ year + 1 }}/{{ num_hour }}/add'">Добавить</button>
                                     {% else %}
                                         <button class="fw-light col-12 border border-light bg-light text-start" type="submit" name="smit" onclick="window.location='/calendar/day/{{ week_days_num[num_day] }}/{{ month }}/{{ year }}/{{ num_hour }}/add'">Добавить</button>
                                     {% endif %}
