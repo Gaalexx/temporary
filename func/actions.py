@@ -91,7 +91,7 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
     else:
         uId = request.cookies.get("is_logined")
         events = edb.getAllEventsWeek(uId, month)
-        if(week_days[0] > week_days[-1]):
+        if(int(week_days[0].strftime("%Y-%m-%d").split('-')[-1]) > int(week_days[-1].strftime("%Y-%m-%d").split('-')[-1])):
             if int(month) == 12:
                 events = events + edb.getAllEventsWeek(uId, 1)
             else:
@@ -100,7 +100,7 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
         [dt.date(events[x][0], events[x][1], events[x][2]), events[x][3], events[x][4], events[x][0], events[x][1],
          events[x][2], events[x][3], events[x][-1]] for x in range(len(events))]
     print(week_events)
-    print(week_days)
+    #print(week_days)
     return make_response(render_template(
         "calendar_week.html",
         month_name=month_name,
