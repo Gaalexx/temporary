@@ -127,11 +127,9 @@ def calendar_day_page(year=None, month=None, day=None) -> make_response:
     from DataBase_class import EventsDataBase
 
     if request.method == "PUT":
-        print("calendar_day_page PUT")
 
         body = request.data.decode("utf-8")
         idd, newHour, oldHour = body.split("|")
-        print("calendar_day_page newHour: %s, oldHour: %s" % (newHour, oldHour))
 
         db = EventsDataBase()
         date = [year, month, day, oldHour]
@@ -170,7 +168,7 @@ def calendar_day_page(year=None, month=None, day=None) -> make_response:
     else:
         uId = request.cookies.get("is_logined")
         events = edb.getDayEvents(uId, date)
-        print("events: %s" % events)
+
     events = [[events[x][0], events[x][1], int(events[x][2]), events[x][3]] for x in range(len(events))]
     return make_response(render_template(
         "calendar_day.html",
