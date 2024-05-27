@@ -210,13 +210,21 @@ class EventsDataBase():
         except:
             return SearchExeption #изменить ошибку
     
-    def updateEvent(self, userId, new_date, information, old_date):
+    def updateEvent(self, userId, new_date, information, old_date, id=None):
         try:
-            self._cursor.execute(
-                    "UPDATE eventsInfo SET name = ?, description = ?, year = ?, month = ?, day = ?, time = ? WHERE userId = ? AND year = ? AND month = ? AND day = ? and time = ?",
-                    (f"{information[0]}", f"{information[1]}", f"{new_date[0]}", f"{new_date[1]}", f"{new_date[2]}", f"{new_date[3]}", f"{userId}", f"{old_date[0]}", f"{old_date[1]}", f"{old_date[2]}", f"{old_date[3]}"),
-                )
-            self._connection.commit()
-            self._cursor.close()
+            if id == None:
+                self._cursor.execute(
+                        "UPDATE eventsInfo SET name = ?, description = ?, year = ?, month = ?, day = ?, time = ? WHERE userId = ? AND year = ? AND month = ? AND day = ? and time = ?",
+                        (f"{information[0]}", f"{information[1]}", f"{new_date[0]}", f"{new_date[1]}", f"{new_date[2]}", f"{new_date[3]}", f"{userId}", f"{old_date[0]}", f"{old_date[1]}", f"{old_date[2]}", f"{old_date[3]}"),
+                    )
+                self._connection.commit()
+                self._cursor.close()
+            else:
+                self._cursor.execute(
+                        "UPDATE eventsInfo SET name = ?, description = ?, year = ?, month = ?, day = ?, time = ? WHERE userId = ? AND year = ? AND month = ? AND day = ? and time = ? and Id = ?",
+                        (f"{information[0]}", f"{information[1]}", f"{new_date[0]}", f"{new_date[1]}", f"{new_date[2]}", f"{new_date[3]}", f"{userId}", f"{old_date[0]}", f"{old_date[1]}", f"{old_date[2]}", f"{old_date[3]}", f"{id}"),
+                    )
+                self._connection.commit()
+                self._cursor.close()
         except:
             print("Ошибка при изменении события")
