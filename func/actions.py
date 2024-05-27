@@ -511,7 +511,7 @@ def viewNote(year=None, month=None, day=None, time=None, id=None):
             else:
                 uId = request.cookies.get("is_logined")
                 print("viewNote POST uId: %s" % uId)
-                db.updateEvent(uId, n_date, [name, description], date)
+                db.updateEvent(uId, n_date, [name, description], date, id)
             return make_response(redirect(f"/calendar/day/{year}/{month}/{day}"))
         elif request.form["submit"] == "delete":
             if not request.cookies.get("is_logined"):
@@ -528,5 +528,5 @@ def viewNote(year=None, month=None, day=None, time=None, id=None):
                 return "Вы не вошли в аккаунт"
             else:
                 uId = request.cookies.get("is_logined")
-                db.updateEvent(uId, date, [name, description], date)
+                db.updateEvent(uId, date, [name, description], date, id)
             return make_response(redirect(f"/calendar/event/{year}/{month}/{day}/{time}/{id}"))
