@@ -27,6 +27,7 @@ def create_app(config_overrides: Optional[Dict] = None) -> Flask:
     app.add_url_rule("/unLogin", "unLogin", unLogin, methods=["GET", "POST"])
     app.add_url_rule("/settings", "settings", settings, methods=["GET", "POST"])
     app.add_url_rule("/calendar/day/<day>/<month>/<year>/<num_hour>/add", "add", get_Info, methods=["GET", "POST"])
+                         #"http://10.10.68.226:5005/calendar/day/5/2024/1/add"
     app.add_url_rule("/change_password", "ch_p", change_password, methods=["GET", "POST"])
     app.add_url_rule("/check_for_change", "ch_check", check_for_change, methods=["GET", "POST"])
     app.add_url_rule("/change", "change", change, methods=["GET", "POST"])
