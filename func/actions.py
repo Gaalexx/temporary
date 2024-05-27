@@ -91,7 +91,8 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
     else:
         uId = request.cookies.get("is_logined")
         events = edb.getAllEventsWeek(uId, month)
-        if(int(week_days[0].strftime("%Y-%m-%d").split('-')[-1]) > int(week_days[-1].strftime("%Y-%m-%d").split('-')[-1])):
+        if int(week_days[0].strftime("%Y-%m-%d").split('-')[-1]) > int(
+                week_days[-1].strftime("%Y-%m-%d").split('-')[-1]):
             if int(month) == 12:
                 events = events + edb.getAllEventsWeek(uId, 1)
             else:
@@ -100,7 +101,7 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
         [dt.date(events[x][0], events[x][1], events[x][2]), events[x][3], events[x][4], events[x][0], events[x][1],
          events[x][2], events[x][3], events[x][-1]] for x in range(len(events))]
     print(week_events)
-    #print(week_days)
+    # print(week_days)
     return make_response(render_template(
         "calendar_week.html",
         month_name=month_name,
@@ -121,12 +122,8 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
     )
     )
 
-def update_task_day_action(year=None, month=None, day=None, id=None) -> make_response:
-    print("update_task_day_action")
 
 def calendar_day_page(year=None, month=None, day=None) -> make_response:
-    print("calendar_day_page")
-
     from DataBase_class import EventsDataBase
 
     if request.method == "PUT":
@@ -140,35 +137,13 @@ def calendar_day_page(year=None, month=None, day=None) -> make_response:
         date = [year, month, day, oldHour]
         n_date = [year, month, day, newHour]
 
-        """
-        viewNote POST date: ['2024', '5', '23', '0']
-        viewNote POST n_date: [2024, 5, 23, 0]
-        """
-
-        print("calendar_day_page date: %s" % date)
-        print("calendar_day_page n_date: %s" % n_date)
-
-        print(body)
-
-        #db.updateEvent(85, n_date, ["name", "description"], date)
-
         if not request.cookies.get("is_logined"):
             return "Вы не вошли в аккаунт"
         else:
             uId = request.cookies.get("is_logined")
-            print(f"calendar_day_page uId: {uId}  date: {date}  id: {idd}")
-
-            #calendar_day_page uId: 2  date: ['2024', '5', '29', '0']  id: 151
-
             res = db.getEvent(uId, date, idd)
-            print("calendar_day_page res: %s" % res)
             if len(res) != 0:
-                print("calendar_day_page res: %s" % res)
-                #print("calendar_day_page res: %s" % res[0])
-
                 db.updateEvent(uId, n_date, [res[0], res[1]], date)
-
-
 
     GregorianCalendar.setfirstweekday(current_app.config["FIRST_DAY_WEEK"])
 
@@ -197,7 +172,6 @@ def calendar_day_page(year=None, month=None, day=None) -> make_response:
         events = edb.getDayEvents(uId, date)
         print("events: %s" % events)
     events = [[events[x][0], events[x][1], int(events[x][2]), events[x][3]] for x in range(len(events))]
-    #print(events)
     return make_response(render_template(
         "calendar_day.html",
         day=day,
@@ -229,7 +203,7 @@ def registration():
         password = request.form["password"]
         from User_class import User
         user = User(name, password, mail)
-        code = user.send_code() #тут
+        code = user.send_code()  # тут
         user = user.to_SET()
         session["user"] = user
         session["code"] = code
@@ -442,7 +416,7 @@ def get_Info(day=None, month=None, year=None, num_hour=None):
             else:
                 uId = request.cookies.get('is_logined')
             edb.addEvent(uId, event, (year, month, day, num_hour))
-            return redirect("/calendar")
+            return make_response(redirect(f"/calendar/day/{year}/{month}/{day}"))
 
 
 def change_password():
@@ -532,19 +506,13 @@ def viewNote(year=None, month=None, day=None, time=None, id=None):
             n_date = list(map(int, n_date.split('-')))
             n_date.append(time[0])
 
-            print("viewNote POST")
-
-
-            print("viewNote POST date: %s" % date)
-            print("viewNote POST n_date: %s" % n_date)
-
             if not request.cookies.get("is_logined"):
                 return "Вы не вошли в аккаунт"
             else:
                 uId = request.cookies.get("is_logined")
                 print("viewNote POST uId: %s" % uId)
                 db.updateEvent(uId, n_date, [name, description], date)
-            return redirect("/calendar")
+            return make_response(redirect(f"/calendar/day/{year}/{month}/{day}"))
         elif request.form["submit"] == "delete":
             if not request.cookies.get("is_logined"):
                 return "Вы не вошли в аккаунт"
@@ -562,4 +530,3 @@ def viewNote(year=None, month=None, day=None, time=None, id=None):
                 uId = request.cookies.get("is_logined")
                 db.updateEvent(uId, date, [name, description], date)
             return make_response(redirect(f"/calendar/event/{year}/{month}/{day}/{time}/{id}"))
-
