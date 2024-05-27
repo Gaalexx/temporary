@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Календарь на месяц</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        function handleCalendarViewChange() {
+            const view = document.getElementById('select_calendar').value;
+            const currentYear = { current_year };
+            const currentMonth = { current_month };
+            const currentDay = { current_day };
+
+            if (view === 'day') {
+                window.location.href = `/calendar/day/${currentYear}/${currentMonth}/${currentDay}`;
+            } else if (view === 'week') {
+                window.location.href = `/calendar/week/${currentYear}/${currentMonth}/${currentDay}`;
+            } else if (view === 'month') {
+                window.location.href = `/calendar/month/${currentYear}/${currentMonth}`;
+            }
+        }
+    </script>
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .calendar {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .calendar-day, .weekday-header {
+            flex: 1 0 14.28%;
+            height: 100px; /* Высота ячеек */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: black;
+            font-size: 1rem;
+        }
+        .weekday-header {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            height: 50px; /* Высота ячеек для дней недели */
+        }
+        .calendar-day.other_month {
+            background-color: #f8f9fa;
+        }
+        .calendar-day .btn {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 1rem;
+        }
+        .calendar-day .btn .badge {
+            color: black;
+        }
+        .calendar-day .btn .badge.bg-primary {
+            color: white;
+        }
+        .month-header {
+            margin-top: 1rem;
+        }
+        .month-nav {
+            gap: 0.5rem;
+        }
+        .select-calendar {
+            margin-bottom: 1rem;
+        }
+        .today-button {
+            margin: 1rem 0; /* Отступ сверху и снизу для кнопки */
+        }
+    </style>
+</head>
+<body class="bg-light d-flex flex-column">
+    <div class="container-fluid px-4 mb-5">
+        <h1 class="bg-light mt-3">Календарь на месяц</h1>
+
+        <div class="row justify-content-between align-items-center month-header mx-3">
+            <div class="col-auto d-flex align-items-center month-nav">
+                <button class="btn btn-secondary me-1" title="Предыдущий месяц" onclick="window.location='/calendar/month{{ previous_month_link }}'">&lt;</button>
+                <h4 class="fw-light mb-0">{{ month_name }} {{ year }}</h4>
+                <button class="btn btn-secondary ms-1" title="Следующий месяц" onclick="window.location='/calendar/month{{ next_month_link }}'">&gt;</button>
+            </div>
+            <div class="select_calendar">
+                <select name="select_calendar" id="select_calendar">
+                  <option value="day">День</option>
+                  <option value="week">Неделя</option>
+                  <option value="month" selected>Месяц</option>
+                </select>
+            </div>н
+        </div>
+
+
+        <div class="row mx-3">
+            <ul class="calendar-header p-0 d-flex w-100">
+                {% for weekday_header in weekdays_headers %}
+                    <li class="weekday-header">{{ weekday_header }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- <div class="row justify-content-center today-button">
+            {% if day != current_day or month != current_month or year != current_year %}
+                <button type="button" class="btn btn-primary" title="{{ current_day }} {{ current_month_name }} {{ current_year }}" onclick="window.location='/calendar/day/{{ current_year }}/{{ current_month }}/{{ current_day }}'">Сегодня</button>
+            {% endif %}
+        </div> -->
+
+        <div class="row calendar mx-3 flex-grow-1">
+            {% for day in month_days %}
+                <div class="calendar-day {% if day.month != month %}other_month{% endif %}">
+                    <button type="submit" class="btn btn-link text-decoration-none p-0" onclick="window.location='/calendar/day/{{day.year}}/{{day.month}}/{{day.day}}'">
+                        {% if day.day == current_day and day.month == current_month and day.year == current_year %}
+                            <span class="badge bg-primary">{{ day.day }}</span>
+                        {% elif days_of_events and day.day in days_of_events and day.month == current_month%}
+                            <span class="badge bg-success">{{ day.day }}</span>
+                        {% else %}
+                            <span>{{ day.day }}</span>
+                        {% endif %}
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="{{ url_for('static', filename='js/select_calendar.js') }}"></script>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/calendar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/calendar_month.css') }}" />
+</head>
+<body>
+    <h1>Календарь на месяц</h1>
+
+    <div class="header">
+
+        <button title="Предыдущий месяц" onclick="window.location='/calendar/month{{ previous_month_link }}'" >&lt;</button>
+        <button title="Следующий месяц" onclick="window.location='/calendar/month{{ next_month_link }}'" >&gt;</button>
+
+        <div class="current-date">
+            {{ month_name }} {{ year }}
+        </div>
+
+
+
+        {% if month != current_month or year != current_year %}
+            <button title="{{ current_day }} {{ current_month_name }} {{ current_year }} " onclick="window.location='/calendar/month/'">Сегодня</button>
+        {% endif %}
+
+        <div class="select_calendar">
+            <select name="select_calendar" id="select_calendar">
+              <option value="day">День</option>
+              <option value="week">Неделя</option>
+              <option value="month" selected>Месяц</option>
+            </select>
+        </div>
+
+    </div>
+
+    <ul class="calendar-header">
+        {% for weekday_header in weekdays_headers %}
+            <li class="weekday-header">{{ weekday_header }}</li>
+        {% endfor %}
+    </ul>
+
+    <ul class="calendar" id="calendar">
+        {% for day in month_days %}
+            <li
+                
+                {% if day.month != month %}
+                    class="day other_month"
+                {% else %}
+                    class="day"
+                {% endif %}
+                data-year="{{ day.year }}" data-month="{{ day.month }}" data-day="{{ day.day }}">
+                {% if days_of_events %}
+                    {% for event in days_of_events if event == day.day%}
+                        <button type="submit" name="year" value="{{ day.year }}" name="month" value="{{ day.month }}" name="day" value="{{ day.day }}" onclick="window.location='/calendar/day/{{day.year}}/{{day.month}}/{{day.day}}'" style="width: 110px; height: 110px;">
+                            {%if day.day == current_day and day.month == current_month and day.year == current_year%}
+                                <span class="daynum-current">
+                            {%elif event == day.day and month == day.month%}
+                                <span class="daynum-event">
+                            {%else%}
+                                <span class="daynum">
+                            {%endif%}
+                            {{ day.day }}</span>
+                        </button>
+                    {%else%}
+                        <button type="submit" name="year" value="{{ day.year }}" name="month" value="{{ day.month }}" name="day" value="{{ day.day }}" onclick="window.location='/calendar/day/{{day.year}}/{{day.month}}/{{day.day}}'" style="width: 110px; height: 110px;">
+                            {% if day.day == current_day and day.month == current_month and day.year == current_year %}
+                                <span class="daynum-current">
+                            {% else %}
+                                <span class="daynum">
+                            {% endif %}
+                            {{ day.day }}</span>
+                        </button>
+                    {% endfor %}
+                {%else%}
+                    <button type="submit" name="year" value="{{ day.year }}" name="month" value="{{ day.month }}" name="day" value="{{ day.day }}" onclick="window.location='/calendar/day/{{day.year}}/{{day.month}}/{{day.day}}'" style="width: 110px; height: 110px;">
+                        {% if day.day == current_day and day.month == current_month and day.year == current_year %}
+                            <span class="daynum-current">
+                        {% else %}
+                            <span class="daynum">
+                        {% endif %}
+                        {{ day.day }}</span>
+                    </button>
+                {% endif %}
+
+            </li>
+        {% endfor %}
+    </ul>
+    
+
+
+</body>
+</html>
+
+<script src="{{ url_for('static', filename='js/select_calendar.js') }}"></script>
+
+  -->
