@@ -75,6 +75,7 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
         week = int(week)
 
     week_days = GregorianCalendar.week_days(year, month, week)
+    week_days_num = [int(week_days[x].strftime("%Y-%m-%d").split('-')[-1]) for x in range(7)]
 
     if week_days[0].month != week_days[6].month:
         month_name = f"{GregorianCalendar.MONTH_NAMES[week_days[0].month - 1]} - {GregorianCalendar.MONTH_NAMES[week_days[6].month - 1]}"
@@ -90,10 +91,16 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
     else:
         uId = request.cookies.get("is_logined")
         events = edb.getAllEventsWeek(uId, month)
+        if(week_days[0] > week_days[-1]):
+            if int(month) == 12:
+                events = events + edb.getAllEventsWeek(uId, 1)
+            else:
+                events = events + edb.getAllEventsWeek(uId, int(month) + 1)
     week_events = [
         [dt.date(events[x][0], events[x][1], events[x][2]), events[x][3], events[x][4], events[x][0], events[x][1],
          events[x][2], events[x][3], events[x][-1]] for x in range(len(events))]
     print(week_events)
+    print(week_days)
     return make_response(render_template(
         "calendar_week.html",
         month_name=month_name,
@@ -108,6 +115,7 @@ def calendar_week_page(year=None, month=None, week=None) -> make_response:
         week_events=week_events,
         weekdays_headers=current_app.config["WEEK_DAYS"],
         week_days=week_days,
+        week_days_num=week_days_num,
         previous_week_link=previous_week_link(year, month, week),
         next_week_link=next_week_link(year, month, week)
     )
@@ -221,7 +229,7 @@ def registration():
         password = request.form["password"]
         from User_class import User
         user = User(name, password, mail)
-        code = user.send_code()
+        code = user.send_code() #тут
         user = user.to_SET()
         session["user"] = user
         session["code"] = code
@@ -426,7 +434,7 @@ def get_Info(day=None, month=None, year=None, num_hour=None):
                 print(n_dates)
                 for x in n_dates:
                     edb.addEvent(uId, event, x)
-                return redirect(f"/calendar")
+                return redirect("/calendar")
 
             uId = 0
             if not request.cookies.get('is_logined'):
@@ -434,7 +442,7 @@ def get_Info(day=None, month=None, year=None, num_hour=None):
             else:
                 uId = request.cookies.get('is_logined')
             edb.addEvent(uId, event, (year, month, day, num_hour))
-            return redirect(f"/calendar")
+            return redirect("/calendar")
 
 
 def change_password():

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for("static", filename="image.jpg") }}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -46,6 +47,7 @@
 
 
     <div class="container-fluid px-4">
+
             <div class="row">
                 {% for num in range(0, 7) %}
                     <div class="col">
@@ -76,25 +78,31 @@
             {% for num_hour in range(0, 24) %}
                 <div class="row">
                     {% for num_day in range(0, 7) %}
+                        {% set added = false %}
                         {% for event in week_events if event[0] == week_days[num_day] and event[1] == num_hour %}
                             <div class="col p-3 border bg-light">
-
                                 <span class="daynum"> {{ week_days[num_day] }} {{ num_hour }}:00 </span>
                                 <br>
                                 <button class="fw-light col-12 border border-warning bg-light text-truncate text-start" style="max-width: 100px;" type="submit" name="smit" onclick="window.location='/calendar/event/{{event[3]}}/{{event[4]}}/{{event[5]}}/{{event[6]}}/{{event[7]}}'">{{event[2]}}</button>
-
-                                <!-- <span href="/calendar/week_days[num_day]/view" class="text">{{ event[2] }}</span> -->
+                                {% set added = true %}
                             </div>
-                        {%else%}
+                        {% else %}
                             <div class="col p-3 border bg-light">
                                 <span class="daynum"> {{ week_days[num_day] }} {{ num_hour }}:00 </span>
                                 <br>
-                                <button class="fw-light col-12 border border-light bg-light text-start" type="submit" name="smit" onclick="window.location='/calendar/day/{{ week_days[num_day].day }}/{{ week_days[num_day].month }}/{{ week_days[num_day].year }}/{{ num_hour }}/add'">Добавить</button>
+                                {% if not added %}
+                                    {% if month != 1 and week_days_num[num_day] < week_days_num[0] %}
+                                        <button class="fw-light col-12 border border-light bg-light text-start" type="submit" name="smit" onclick="window.location='/calendar/day/{{ week_days_num[num_day] }}/{{month + 1}}/{{ year }}/{{ num_hour }}/add'">Добавить</button>
+                                    {% else %}
+                                        <button class="fw-light col-12 border border-light bg-light text-start" type="submit" name="smit" onclick="window.location='/calendar/day/{{ week_days_num[num_day] }}/{{ month }}/{{ year }}/{{ num_hour }}/add'">Добавить</button>
+                                    {% endif %}
+                                {% endif %}
                             </div>
                         {% endfor %}
                     {% endfor %}
                 </div>
             {% endfor %}
+
         </div>
     </div>
 
