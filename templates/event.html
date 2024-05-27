@@ -38,7 +38,7 @@
             <h1>Событие</h1>
             <form method="post">
                 <label for="title">Название:</label><br>
-                <input class="form-control" type="text" id="title" name="title" value={{event[0]}} placeholder="Напишите название"><br>
+                <input class="form-control" type="text" id="title" name="title" value="{{ ''.join(event[0]) }}" placeholder="Напишите название"><br>
                 <label for="description">Описание:</label><br>
                 <textarea class="form-control form-control-lg" id="description" name="description" rows="4" cols="50"
                           placeholder="Напишите текст">{{event[1]}}</textarea><br>
