@@ -141,7 +141,7 @@ def calendar_day_page(year=None, month=None, day=None) -> make_response:
             uId = request.cookies.get("is_logined")
             res = db.getEvent(uId, date, idd)
             if len(res) != 0:
-                db.updateEvent(uId, n_date, [res[0], res[1]], date)
+                db.updateEvent(uId, n_date, [res[0], res[1]], date, idd)
 
     GregorianCalendar.setfirstweekday(current_app.config["FIRST_DAY_WEEK"])
 
